@@ -34,24 +34,47 @@ Array.prototype.clone = function(){
 
 
 
-const GameData = {
-	gameOver : false,
-	gameMaps : [map1,map2,map3,map4,map5,map6],
-	level : 0
+var GameData = {
+	gameMaps : [map1,map2,map3,map4,map5,map6,map7,map8,map9,map10,map11,map11,map12,map13,map14,map15,map16,map17,map18,map19,map20,map21],
+	level : 0,
+	point:[0,12,24],
+	tankSpeed : [2,2,1,2,1,1,1],
+	tankHP : [1,1,1,1,2,3,1],
+	maxTank : 5,
+	bullet : [3,5,6,7,8,9],
+	tool : false
+}
+
+ function reload(){
+	GameData.gameOver = false;
+	GameData.enemys = [];
+	GameData.live = 3;
+	GameData.enemyCount = 20;
+	GameData.score = 0;
+}
+
+function next(){
+	GameData.level++;
+	if(GameData.level>=GameData.gameMaps.length){
+		GameData.level = 0;
+	}
+	GameData.enemys = [];
+	GameData.enemyCount = 20;
 }
 
 
 
 
 var Stage = new PIXI.Application({
-	width: 512,
+	width: 480,
 	height: 416,
 	backgroundColor: 0x0,
 });
 
 Stage._width = Stage.view.width;
 Stage._height = Stage.view.height;
-Stage._map = map1.clone();
+Stage._map = map2.clone();
+
 
 Stage.addChild = function(e){
 	Stage.stage.addChild(e);
@@ -86,6 +109,27 @@ Stage.hit = function(obj1,obj2){
 		else{
 			return false;
 		}
+	}
+	else if(obj1.name === 'bullet'&&obj2.name === 'tank'){
+		if(obj1.x>=obj2.x&&obj1.x<=obj2.x+32
+			&&obj1.y>=obj2.y&&obj1.y<=obj2.y+32){
+				return true;
+			}
+		else{
+			return false;
+		}
+	}
+	else if(obj1.name === 'tank'&&obj2.name === 'bullet'){
+		if(obj2.x>=obj1.x&&obj2.x<=obj1.x+32
+			&&obj2.y>=obj1.y&&obj2.y<=obj1.y+32){
+				return true;
+			}
+		else{
+			return false;
+		}
+	}
+	else if((obj1.name === 'tool'&&obj2.name === 'bullet')||(obj1.name === 'bullet'&&obj2.name === 'tool')){
+		return false;
 	}
 	else{
 		if(Math.abs(obj1._x- obj2._x )<=1&& Math.abs(obj1._y-obj2._y)<=1){
@@ -158,57 +202,13 @@ window.addEventListener('keydown',function(e){
 
 
 
-
-
-/*
-var Stage = function(context,l){
-	this.ctx = context;
-	this.ctx.fillStyle = "#7f7f7f";
-	this.drawHeigth = 15;
-	this.level = l;
-	this.temp = 0;
-	this.dir = 1; //中间切换的方向，1：合上，2：展开
-	this.isReady = false;//标识地图是否已经画好
-	this.levelNum = new Num(context);
-	
-	this.init = function(level){
-		this.dir = 1;
-		this.isReady = false;
-		this.level = level;
-		this.temp = 0;
-	};
-	
-	this.draw = function(){
-		if(this.dir == 1){
-			
-			//temp = 15*15 灰色屏幕已经画完
-			if(this.temp == 225){
-				//78,14为STAGE字样在图片资源中的宽和高，194,208为canvas中的位置
-				this.ctx.drawImage(RESOURCE_IMAGE, POS["stageLevel"][0], POS["stageLevel"][1], 78, 14, 194, 208, 78, 14);
-				//14为数字的宽和高，308, 208为canvas中的位置
-				this.levelNum.draw(this.level,308, 208);
-				//this.ctx.drawImage(RESOURCE_IMAGE,POS["num"][0]+this.level*14,POS["num"][1],14, 14,308, 208,14, 14);
-				//绘制地图,调用main里面的方法
-				initMap();
-				
-			}else if(this.temp == 225 + 600){
-				//600即调用了600/15次，主要用来停顿
-				this.temp = 225;
-				this.dir = -1;
-				START_AUDIO.play(); 
-			}else{
-				this.ctx.fillRect(0, this.temp, 512, this.drawHeigth);
-				this.ctx.fillRect(0, 448 - this.temp - this.drawHeigth , 512, this.drawHeigth);
-			}
-		}else{
-			if(this.temp >= 0){
-				this.ctx.clearRect(0, this.temp , 512, this.drawHeigth);
-				this.ctx.clearRect(0, 448 - this.temp - this.drawHeigth, 512, this.drawHeigth);
-			}else{
-				this.isReady = true;
-			}
-		}
-		this.temp += this.drawHeigth * this.dir;
-	};
-};
-*/
+function isPC(){
+	var sUserAgent = navigator.userAgent;
+	if (sUserAgent.indexOf('Android') > -1 || sUserAgent.indexOf('iPhone') > -1 ||
+	   sUserAgent.indexOf('iPad') > -1 || sUserAgent.indexOf('iPod') > -1 || sUserAgent.indexOf('Symbian') > -1) {
+		return false;
+	}
+	else{
+		return true;
+	}
+}

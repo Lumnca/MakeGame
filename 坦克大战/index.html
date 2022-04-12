@@ -9,8 +9,12 @@
 
 <body>
 	<div id="main"></div>
+	<div id="keyword">
+
+	</div>
 	<div>
-		方向键移动，空格键射击！
+		PC端方向键移动，空格键射击！，回车键确认！<br>
+		手机端使用虚拟键盘，S键为确认/射击键
 	</div>
 	<video src="audio/start.mp3"></video>
 </body>
@@ -20,12 +24,56 @@
 <script src="js/sprite.js"></script>
 <script src="js/scene.js"></script>
 <script>
-const Loader = PIXI.Loader.shared; //资源加载器
-Loader.add('images/menu.gif');
-Loader.add('images/tankAll.gif');
-Loader.load((loader, resources) => {
-	Stage.scene(MenuScene);
-});
+	const Loader = PIXI.Loader.shared; //资源加载器
+	Loader.add('images/menu.gif');
+	Loader.add('images/tankAll.gif');
+	Loader.add('images/keyword.png');
+	Loader.load((loader, resources) => {
+		Stage.scene(MenuScene);
+		if (!isPC()) {
+			const keyword = new PIXI.Application({
+				width: 400,
+				height: 200,
+				backgroundColor: 0x0,
+			});
+
+			document.getElementById('keyword').appendChild(keyword.view);
+			const keyUP = new Button(0, 6);
+			const keyLEFT = new Button(1, 6);
+			const keyRIGHT = new Button(2, 6);
+			const keyDOWN = new Button(3, 6);
+			const keyS = new Button(2, 2);
+			keyLEFT.x = 0;
+			keyLEFT.y = 64 + 5;
+			keyDOWN.x = keyLEFT.x + 64 + 5;
+			keyDOWN.y = keyLEFT.y;
+			keyUP.x = keyDOWN.x;
+			keyUP.y = 0;
+			keyRIGHT.x = keyDOWN.x + 64 + 5;
+			keyRIGHT.y = keyDOWN.y;
+			keyS.x = keyRIGHT.x + 64 + 25;
+			keyS.y = keyDOWN.y;
+			keyS.click = () => {
+				if (KeyWord['Enter']) KeyWord['Enter']();
+				if (KeyWord['Space']) KeyWord['Space']();
+			}
+			keyDOWN.click = () => {
+				if (KeyWord['ArrowDown']) KeyWord['ArrowDown']();
+			}
+			keyLEFT.click = () => {
+				if (KeyWord['ArrowLeft']) KeyWord['ArrowLeft']();
+			}
+			keyRIGHT.click = () => {
+				if (KeyWord['ArrowRight']) KeyWord['ArrowRight']();
+			}
+			keyUP.click = () => {
+				if (KeyWord['ArrowUp']) KeyWord['ArrowUp']();
+			}
+			keyword.stage.addChild(keyUP, keyDOWN, keyRIGHT, keyLEFT, keyS)
+		}
+	});
+
+
 
 </script>
 

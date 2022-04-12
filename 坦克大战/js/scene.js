@@ -42,15 +42,50 @@ GameScene.prototype = Object.create(PIXI.Container.prototype)
 GameScene.prototype.constructor =  GameScene;
 
 GameScene.prototype.init = function(){
-    GameData.gameOver = false;
+    reload();
     Stage.playVideo('audio/start.mp3')
     PIXI.Container.call(this);
     this.create();
     this._active = true;
-
+    this._isNext = false;
 }
 
 GameScene.prototype.create = function(){
-    Stage._map = map1.clone();
-    this.addChild(new MapSprite());
+    Stage._map = GameData.gameMaps[GameData.level].clone();
+    this._gameSprite = new MapSprite();
+    this.addChild(this._gameSprite);
+    this._uiSprite = new UISprite();
+    this.addChild(this._uiSprite);
+    this._uiSprite.x = Stage._width - 64;
+}
+
+GameScene.prototype.next = function(){
+    this._isNext = true;
+}
+
+
+GameScene.prototype.clear = function(){
+    this.removeChildren(0);
+}
+
+GameScene.prototype.nextLevel = function(){
+    this.clear();
+    next();
+    this.create();
+    Stage.playVideo('audio/start.mp3')
+}
+
+GameScene.prototype.update = function(){
+    if(this._isNext){
+        this.alpha-=0.03;
+        if(this.alpha<=0){
+            this._isNext = false;
+            this.nextLevel();
+        }
+    }
+    else{
+        if(this.alpha<1){
+            this.alpha+= 0.03;
+        }
+    }
 }
