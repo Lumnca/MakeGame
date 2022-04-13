@@ -20,7 +20,7 @@ Array.prototype.remove = function(e){
 		this.splice(i,1);
 	}
 }
-
+//数组克隆
 Array.prototype.clone = function(){
 	let newArr = [];
 	this.forEach((arr,i)=>{
@@ -32,19 +32,21 @@ Array.prototype.clone = function(){
 	return newArr;
 }
 
-
+/**
+ * 游戏数据配置
+ */
 
 var GameData = {
 	gameMaps : [map1,map2,map3,map4,map5,map6,map7,map8,map9,map10,map11,map11,map12,map13,map14,map15,map16,map17,map18,map19,map20,map21],
-	level : 0,
-	point:[0,12,24],
-	tankSpeed : [2,2,1,2,1,1,1],
-	tankHP : [1,1,1,1,2,3,1],
-	maxTank : 5,
-	bullet : [3,5,6,7,8,9],
-	tool : false
+	level : 0,//当前关卡
+	point:[0,12,24],//
+	tankSpeed : [2,2,1,2,1,1,1],//每种类型的坦克速度
+	tankHP : [1,1,1,1,2,3,1],//tank可受子弹数
+	maxTank : 5,//地图可显示最大坦克数
+	bullet : [3,5,6,7,8,9],//子弹对应等级速度
+	tool : false //地图上显示奖励道具
 }
-
+//重新加载游戏数据
  function reload(){
 	GameData.gameOver = false;
 	GameData.enemys = [];
@@ -52,7 +54,7 @@ var GameData = {
 	GameData.enemyCount = 20;
 	GameData.score = 0;
 }
-
+//下一关
 function next(){
 	GameData.level++;
 	if(GameData.level>=GameData.gameMaps.length){
@@ -63,7 +65,9 @@ function next(){
 }
 
 
-
+/**
+ * 游戏显示的对象舞台
+ */
 
 var Stage = new PIXI.Application({
 	width: 480,
@@ -101,6 +105,7 @@ Stage.canPass = function(i,j){
 		return false;
 	}
 }
+//游戏中的物体碰撞检测机制
 Stage.hit = function(obj1,obj2){
 	if(obj1.name === 'bullet'&&obj2.name === 'bullet'){
 		if(Math.abs(obj1._x- obj2._x )<=0&& Math.abs(obj1._y-obj2._y)<=0){
@@ -141,6 +146,7 @@ Stage.hit = function(obj1,obj2){
 	}
 }
 
+//音频播放器
 Stage.video = document.getElementsByTagName('video')[0];
 
 Stage.playVideo = function(url){
@@ -164,6 +170,7 @@ Stage.ticker.add(function(){
 	update(Stage.stage);
 });
 
+//在指定区域加载游戏舞台
 document.getElementById('main').appendChild(Stage.view);
 
 
@@ -187,6 +194,9 @@ Stage.reDir = function(dir){
 }
 
 
+/**
+ * 键盘事件注册
+ */
 
 var KeyWord = {
 }

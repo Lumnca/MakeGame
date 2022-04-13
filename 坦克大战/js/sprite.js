@@ -1,4 +1,6 @@
-
+//======================================================================
+//按钮精灵类
+//======================================================================
 function Button() {
     this.init.apply(this, arguments);
 }
@@ -15,9 +17,7 @@ Button.prototype.init = function (x,y,w,h) {
     this._orginFrame =  Loader.resources['images/keyword.png'].texture.setFrame(x*32,y*32,w||32,h||32);
     this._clickFrame =  Loader.resources['images/keyword.png'].texture.setFrame(x*32,(y+1)*32,w||32,h||32);
     this.texture = this._orginFrame;
-
     this._isClick = false;
-    //启用点击按钮按钮会变大
     this._clickDisabled = true;
     this.scale.set(2);
 }
@@ -96,7 +96,7 @@ MenuSprite.prototype.keydownEvent = function () {
     }
 }
 //=======================================================================================================
-//MapTile
+//MapTile地图格子类
 //=======================================================================================================
 function MapTile() {
     this.init.apply(this, arguments);
@@ -142,7 +142,7 @@ MapTile.prototype.changeTile = function (type) {
 }
 
 //=======================================================================================================
-//TankSprite
+//TankSprite坦克精灵类
 //=======================================================================================================
 
 function TankSprite() {
@@ -494,7 +494,7 @@ TankSprite.prototype.hitEvent = function (obj) {
     }
 }
 //========================================================================================================
-// 子弹对象
+// 子弹对象精灵类
 //========================================================================================================
 function BulletSprite() {
     this.init.apply(this, arguments);
@@ -897,7 +897,7 @@ NumberSprite.prototype.changeNum = function (num, length) {
     this.createTexture(length);
 }
 //=============================================================================================
-//道具类
+//道具精灵类
 //=============================================================================================
 function ToolSprite() {
     this.init.apply(this, arguments);
@@ -1032,7 +1032,7 @@ ToolSprite.prototype.toolEffect = function (type) {
 
 
 //=============================================================================================
-//右侧UI栏
+//右侧UI栏精灵类
 //============================================================================================
 function UISprite() {
     this.init.apply(this, arguments);

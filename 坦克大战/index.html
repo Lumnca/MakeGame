@@ -5,6 +5,7 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>坦克大战</title>
 </head>
 
 <body>
@@ -20,7 +21,7 @@
 </body>
 <script src="js/level.js"></script>
 <script src="js/pixi.js"></script>
-<script src="js/stage.js"></script>
+<script src="js/main.js"></script>
 <script src="js/sprite.js"></script>
 <script src="js/scene.js"></script>
 <script>
@@ -28,8 +29,11 @@
 	Loader.add('images/menu.gif');
 	Loader.add('images/tankAll.gif');
 	Loader.add('images/keyword.png');
+	
 	Loader.load((loader, resources) => {
+		//初始化游戏舞台
 		Stage.scene(MenuScene);
+		//适配手机移动端
 		if (!isPC()) {
 			const keyword = new PIXI.Application({
 				width: 400,
